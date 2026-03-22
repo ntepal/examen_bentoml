@@ -6,6 +6,11 @@ import os
 df = pd.read_csv("data/raw/admission.csv")
 
 # 2. Nettoyage
+
+# Nettoyage automatique des noms de colonnes (enlève les espaces invisibles)
+# C'est le cas pour Chance of Admit avec espace invisible
+df.columns = df.columns.str.strip()
+
 # On retire 'Serial No.' car c'est juste un index
 if 'Serial No.' in df.columns:
     df = df.drop(columns=['Serial No.'])

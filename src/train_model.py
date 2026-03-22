@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error, root_mean_squared_error, r2_scor
 # 1. Charger les données traitées
 X_train = pd.read_csv("data/processed/X_train.csv")
 # y_train = pd.read_csv("data/processed/y_train.csv") est vue comme
-# un dataframe (2D) et non pas comme une série. 
+# un dataframe (2D) et non pas comme une série.
 # Le .values convertit le df comme un tableau numpy
 # et le .ravel() le convertiten une liste de valeur donc comme une série
 y_train = pd.read_csv("data/processed/y_train.csv").values.ravel()
@@ -19,7 +19,7 @@ model.fit(X_train, y_train)
 
 # 3. Évaluation
 y_pred = model.predict(X_test)
-print(f"MSE: {mean_squared_error(y_test, y_pred, squared=True):.4f}")
+print(f"MSE: {mean_squared_error(y_test, y_pred):.4f}")
 print(f"RMSE: {root_mean_squared_error(y_test, y_pred):.4f}")
 print(f"R2 Score: {r2_score(y_test, y_pred):.4f}")
 
