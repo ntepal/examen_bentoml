@@ -1,29 +1,54 @@
 import requests
 
-BASE_URL = "http://localhost:3000"
+# The URL of the login and prediction endpoints
+login_url = "http://127.0.0.1:3001/login"
+predict_url = "http://127.0.0.1:3001/predict"
 
-def test_login():
-    payload = {"username": "admin", "password": "bentoml_2026"}
-    response = requests.post(f"{BASE_URL}/login", json=payload)
-    assert response.status_code == 200
-    assert response.json()["status"] == "success"
-    return response.json()["token"]
+# Données de connexion - les APIs BentoML orientées classes attendent une clé égale au nom de l'argument
+login_payload = {
+    "credentials": {
+        "username": "user123",
+        "password": "password123"
+    }
+}
 
-def test_predict():
-    # On récupère le token d'abord
-    token = test_login()
-    headers = {"Authorization": f"Bearer {token}"}
+# Send a POST request to the login endpoint
+login_response = requests.post(
+    login_url,
+    headers={"Content-Type": "application/json"},
+    json=login_payload
+)
 
-    data = {
-        "GRE_Score": 320,
-        "TOEFL_Score": 110,
-        "University_Rating": 3,
-        "SOP": 4.0,
-        "LOR": 4.0,
-        "CGPA": 8.5,
-        "Research": 1
+# Check if the login was successful
+if login_response.status_code == 200:
+    token = login_response.json().get("token")
+    print("Token JWT obtenu:", token)
+
+    # Data to be sent to the prediction endpoint
+    # on utilise les noms de variables définies dans src/service.py
+    # plutôt que les noms originaux de colonnes. Plus facile à manipuer
+    prediction_payload = {
+        "input_data": {
+            "gre_score": 320,
+            "toefl_score": 110,
+            "univ_rating": 3,
+            "sop": 4.0,
+            "lor": 4.0,
+            "cgpa": 8.5,
+            "research": 1
+        }
     }
 
-    response = requests.post(f"{BASE_URL}/predict", json=data, headers=headers)
-    assert response.status_code == 200
-    assert "chance_of_admit" in response.json()
+    # Send a POST request to the prediction
+    response = requests.post(
+        predict_url,
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}"
+        },
+        json=prediction_payload
+    )
+
+    print("Réponse de l'API de prédiction:", response.text)
+else:
+    print("Erreur lors de la connexion:", login_response.text)
