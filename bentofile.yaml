@@ -1,0 +1,16 @@
+service: "src.service:AdmissionClassifierService" # class définie dans src/service.py sous @bentoml.service
+description: "Service de prédiction d'admission avec sécurité JWT"
+labels:
+  owner: "DataScientest"
+  project: "admissions_prediction"
+
+include:
+  - "src/*.py"         # inclure seulement le code source. Les "" pour éviter une mauvaise interprétation
+  - "requirements.txt" # inclure le requirement sous la racine pour les dépendances
+
+models:
+  - admission_regressor:latest # défini dans src/train_model.py (bentoml.sklearn.save_model). Aussi visible avec uv run bentoml models list
+
+python:
+  requirements_txt: "requirements.txt" # Utiliser le fichier existant (après avoir fait uv pip freeze > requirements.txt pour obtenir les versions
+  # packages: - bentoml==1.4.36.. - scikit-learn.. devient inutile car fait à partir de requirements.txt
