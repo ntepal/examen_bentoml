@@ -32,3 +32,8 @@ predict:
 
 # 4. Alias pour lancer le test
 test-api: predict
+
+# 5. Lancement des tests unitaires en mode verbose (-v)
+test:
+	@echo "Lancement des tests unitaires..."
+	uv run pytest tests/test_unitaire.py -v

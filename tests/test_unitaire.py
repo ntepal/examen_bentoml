@@ -1,15 +1,15 @@
 import requests
 import pytest
 import jwt
-import datetime
+from datetime import datetime, timedelta, timezone
 
 # CONFIGURATION
 # Dans le Makefile
 PORT = 3001
-BASE_URL = "http://localhost:$(PORT)"
+BASE_URL = f"http://localhost:{PORT}"
 
 # Dans le src/service.py
-JWT_SECRET_KEY = "admission_secret_key_2026"
+JWT_SECRET_KEY = "AvoidInsecureKeyLengthWarning_WithHMAC_HigherThan32bytes"
 JWT_ALGORITHM = "HS256"
 # Identifiants de test
 VALID_CREDENTIALS = {"credentials": {"username": "user123", "password": "password123"}}

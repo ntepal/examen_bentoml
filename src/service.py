@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 # --- CONFIGURATION SÉCURITÉ ---
 # Clé secrête hardcodé pour l'évaluation
 # Mais à mettre dans le .venv en production réelle
-JWT_SECRET_KEY = "admission_secret_key_2026"
+JWT_SECRET_KEY = "AvoidInsecureKeyLengthWarning_WithHMAC_HigherThan32bytes"
 JWT_ALGORITHM = "HS256"
 
 USERS = {
@@ -63,7 +63,7 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
                 return JSONResponse(
                     status_code=401,
                     content={
-                        "detail": "Invalid authentication scheme. Use 'Bearer <token>'"
+                        "detail": "Invalid authentication standard. Use 'Bearer <token>'"
                     }
                 )
 
